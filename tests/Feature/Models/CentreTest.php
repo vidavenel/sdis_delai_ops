@@ -12,11 +12,6 @@ class CentreTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
     public function test_seeder()
     {
         $this->seed(CentreSeeder::class);
