@@ -1,4 +1,4 @@
-#DELAI INTERVENTION TEMPS REEL
+#DELAI INTERVENTION TEMPS REEL ![build status](https://app.travis-ci.com/vidavenel/sdis_delai_ops.svg?branch=master)
 
 ##Contexte
 
