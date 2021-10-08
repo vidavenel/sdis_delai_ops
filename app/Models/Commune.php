@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -27,5 +28,21 @@ class Commune extends Model
         return $this->belongsToMany(Centre::class)
             ->withPivot('delai')
             ->orderByPivot('delai');
+    }
+
+    public function getEnginsByMission()
+    {
+        $_missions = Mission::all();
+        $_centres = $this->centres;
+        $res = [];
+
+        foreach ($_missions as $_mission) {
+            $res[$_mission->libelle] = [];
+            /** @var Centre $centre */
+            foreach ($_centres as $centre) {
+                $res[$_mission->libelle][] = $centre->getEnginsHasMission($_mission)->first();
+            }
+        }
+        return $res;
     }
 }

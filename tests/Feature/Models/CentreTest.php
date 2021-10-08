@@ -3,6 +3,7 @@
 namespace Tests\Feature\Models;
 
 use App\Models\Centre;
+use App\Models\Mission;
 use Database\Seeders\CentreSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -25,5 +26,15 @@ class CentreTest extends TestCase
     {
         Centre::factory()->count(80)->create();
         $this->assertDatabaseCount('centres', 80);
+    }
+
+    public function test_getEnginsHasMission_function()
+    {
+        $this->seed();
+        $mission = Mission::where('libelle', 'SAP')->firstOrFail();
+        /** @var Centre $centre */
+        $centre = Centre::where('libelle_court', 'AUP')->firstOrFail();
+
+        $this->assertEquals('VSAV0168', $centre->getEnginsHasMission($mission)->first()->no_parc);
     }
 }

@@ -86,4 +86,16 @@ class CommuneTest extends TestCase
         $this->assertEquals(25, $commune2->centres->get(2)->pivot->delai);
         $this->assertEquals('TTR', $commune2->centres->get(2)->libelle_court);
     }
+
+    public function test_get_engins_by_missions()
+    {
+        $this->seed();
+        /** @var Commune $commune */
+        $commune = Commune::where('nom', 'Aups')->firstOrFail();
+
+        $res = $commune->getEnginsByMission();
+
+        $this->assertEquals('VSAV0168', ($res['SAP'][0])->no_parc);
+        $this->assertEquals('VIPSR002', ($res['INC'][0])->no_parc);
+    }
 }
