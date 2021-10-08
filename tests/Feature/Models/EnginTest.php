@@ -68,4 +68,17 @@ class EnginTest extends TestCase
         $this->assertContains($missions->first()->id, $engin->missions->pluck('id')->all());
         $this->assertContains($missions->last()->id, $engin->missions->pluck('id')->all());
     }
+
+    public function test_missions_relation_with_seeder()
+    {
+        $this->seed();
+
+        $engin = Engin::where('no_parc', 'VIPSR002')->firstOrFail();
+        $this->assertContains('SR', $engin->missions->pluck('libelle')->all());
+        $this->assertContains('INC', $engin->missions->pluck('libelle')->all());
+
+        $engin = Engin::where('no_parc', 'VIP00012')->firstOrFail();
+        $this->assertNotContains('SR', $engin->missions->pluck('libelle')->all());
+        $this->assertContains('INC', $engin->missions->pluck('libelle')->all());
+    }
 }

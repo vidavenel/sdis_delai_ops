@@ -4,7 +4,9 @@ namespace Tests\Feature\Models;
 
 use App\Models\Centre;
 use App\Models\Commune;
+use Database\Seeders\CentreSeeder;
 use Database\Seeders\CommuneSeeder;
+use Database\Seeders\DelaiSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
@@ -63,5 +65,25 @@ class CommuneTest extends TestCase
         for ($i = 0; $i < $centres_returned->count() - 1; $i++) {
             $this->assertGreaterThanOrEqual($centres_returned->get($i)->pivot->delai, $centres_returned->get($i + 1)->pivot->delai);
         }
+    }
+
+    public function test_get_centres_ordered_seeder()
+    {
+        $this->seed();
+        /** @var Commune $commune */
+        $commune = Commune::where('nom', 'Verignon')->firstOrFail();
+        $commune2 = Commune::where('nom', 'Fox-Amphoux')->firstOrFail();
+
+        $this->assertEquals(15, $commune->centres->get(1)->pivot->delai);
+        $this->assertEquals('TTR', $commune->centres->get(1)->libelle_court);
+
+        $this->assertEquals(10, $commune2->centres->get(0)->pivot->delai);
+        $this->assertEquals('SLS', $commune2->centres->get(0)->libelle_court);
+
+        $this->assertEquals(15, $commune2->centres->get(1)->pivot->delai);
+        $this->assertEquals('AUP', $commune2->centres->get(1)->libelle_court);
+
+        $this->assertEquals(25, $commune2->centres->get(2)->pivot->delai);
+        $this->assertEquals('TTR', $commune2->centres->get(2)->libelle_court);
     }
 }
