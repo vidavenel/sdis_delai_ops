@@ -18,6 +18,18 @@ class CreateCommunesTable extends Migration
             $table->string('nom');
             $table->timestamps();
         });
+
+        Schema::create('centre_commune', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('commune_id');
+            $table->foreignId('centre_id');
+
+            $table->foreign('commune_id')->references('id')->on('communes');
+            $table->foreign('centre_id')->references('id')->on('centres');
+
+            $table->integer('delai')->nullable();
+        });
     }
 
     /**
@@ -27,6 +39,7 @@ class CreateCommunesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('centre_commune');
         Schema::dropIfExists('communes');
     }
 }
